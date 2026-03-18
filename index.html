@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>月額料金シミュレーション</title>
 <meta name="robots" content="noindex, nofollow">
+
 <style>
   /* ベース設定 */
   body {
@@ -73,7 +74,7 @@
     color: #005bac;
   }
 
-  /* セレクトボックス（初期非表示用クラス含む） */
+  /* セレクトボックス */
   .sim-select {
     width: 100%;
     padding: 12px;
@@ -166,35 +167,55 @@
   input:checked + .slider { background-color: #ff5a00; }
   input:checked + .slider:before { transform: translateX(22px); }
 
-  /* 料金表示ボックス */
+  /* 料金表示ボックス（1年目／2年目の2カラム） */
   .result-box {
     background: #fff;
     border: 3px solid #005bac;
     border-radius: 8px;
-    padding: 20px 16px;
-    text-align: center;
+    padding: 16px 12px;
     margin-bottom: 20px;
-    position: relative;
   }
-  .result-label {
+  .result-header {
+    text-align: center;
     font-size: 0.95rem;
     color: #005bac;
     font-weight: bold;
+    margin-bottom: 16px;
+  }
+  .price-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .price-col {
+    flex: 1;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid #eee;
+  }
+  .price-col.highlight {
+    background: #fff0f0;
+    border-color: #ffcccc;
+  }
+  .col-label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #555;
     margin-bottom: 8px;
   }
-  .result-price {
-    font-size: 2.8rem;
+  .col-price {
+    font-size: 1.8rem;
     font-weight: bold;
     color: #333;
     line-height: 1;
   }
-  .result-price span {
-    font-size: 1.2rem;
+  .highlight .col-price {
+    color: #d10000;
   }
-  .total-note {
-    font-size: 0.75rem;
-    color: #666;
-    margin-top: 8px;
+  .col-price span {
+    font-size: 0.9rem;
   }
 
   /* 内訳リスト */
@@ -202,7 +223,7 @@
     list-style: none;
     padding: 0;
     margin: 0 0 24px 0;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #555;
   }
   .breakdown li {
@@ -212,7 +233,13 @@
     border-bottom: 1px solid #eee;
   }
   .breakdown li.discount { color: #d10000; font-weight: bold; }
-  .breakdown li.sum { color: #005bac; font-weight: bold; border-top: 2px solid #ddd; margin-top: 4px; padding-top: 12px;}
+  .cb-note {
+    font-size: 0.7rem;
+    color: #888;
+    text-align: right;
+    margin-top: -4px;
+    margin-bottom: 8px;
+  }
 
   /* 最終CVボタン */
   .cv-btn {
@@ -271,7 +298,7 @@
   <div id="result_area" class="result-area">
     
     <div class="toggle-container">
-      <div class="toggle-label">🎁 新規3万円キャッシュバック<br><span style="font-size:0.7rem; color:#888;">(月額実質2,500円割引として計算)</span></div>
+      <div class="toggle-label">🎁 新規3万円キャッシュバック適用<br><span style="font-size:0.7rem; color:#888;">(12ヶ月間、実質2,500円/月割引)</span></div>
       <label class="toggle-switch">
         <input type="checkbox" id="cb_toggle" checked onchange="updateResult()">
         <span class="slider"></span>
@@ -279,87 +306,89 @@
     </div>
 
     <div class="result-box">
-      <div class="result-label">家計全体の「実質」月額負担額</div>
-      <div class="result-price" id="display_total">--<span>円</span></div>
-      <div class="total-note">※光回線とスマホ割を合算した通信費トータルの目安です</div>
+      <div class="result-header">家計全体の「実質」月額負担額</div>
+      <div class="price-columns">
+        
+        <div class="price-col highlight">
+          <div class="col-label">1年目<br>（1〜12ヶ月目）</div>
+          <div class="col-price" id="price_year1">--<span>円</span></div>
+        </div>
+
+        <div class="price-col">
+          <div class="col-label">2年目以降<br>ずーっと</div>
+          <div class="col-price" id="price_year2">--<span>円</span></div>
+        </div>
+
+      </div>
     </div>
 
     <ul class="breakdown">
       <li><span>ネット基本料金</span><span id="display_base">--円</span></li>
       <li class="discount"><span>📱 スマホセット割（おうち割）</span><span id="display_discount">-0円</span></li>
-      <li class="discount" id="cb_row"><span>🎁 CB特典（12ヶ月換算）</span><span id="display_cb">-2,500円</span></li>
+      <li class="discount" id="cb_row"><span>🎁 CB特典（1〜12ヶ月目のみ）</span><span id="display_cb">-2,500円</span></li>
     </ul>
 
-    <button type="button" class="cv-btn">この条件で詳細見積もりへ進む</button>
+    <button type="button" class="cv-btn">この条件でプロに相談・申し込み</button>
   </div>
 </div>
 
 <script>
-  // STEP2で「SoftBank」か「Y!mobile」を選んだ時だけSTEP3を表示
   function toggleFamilyStep() {
     const carrier = document.querySelector('input[name="carrier"]:checked');
     const familyStep = document.getElementById('family_step');
     
-    // SBかYMが選ばれていれば表示、それ以外（なし・未選択）なら非表示
     if (carrier && parseInt(carrier.value) > 0) {
       familyStep.style.display = 'block';
     } else {
       familyStep.style.display = 'none';
-      document.getElementById('phone_count').value = "1"; // リセット
+      document.getElementById('phone_count').value = "1";
     }
   }
 
-  // 初回計算処理（ボタン押下時）
   function calculatePrice() {
-    // キャリアが未選択の場合はアラート
     if (!document.querySelector('input[name="carrier"]:checked')) {
       alert('ご利用中のスマホを選択してください。');
       return;
     }
-    
-    updateResult(); // 計算＆描画
-    
+    updateResult();
     const resultArea = document.getElementById('result_area');
     resultArea.style.display = 'block';
     resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // 計算ロジック本体（トグル切り替え時にも発火）
   function updateResult() {
-    // 1. 各項目の値を取得
     const basePrice = parseInt(document.querySelector('input[name="house_type"]:checked').value);
     const carrierInput = document.querySelector('input[name="carrier"]:checked');
     const carrierDiscount = carrierInput ? parseInt(carrierInput.value) : 0;
-    
-    // 台数の取得（「なし」の場合は強制0台）
     const phoneCount = carrierDiscount > 0 ? parseInt(document.getElementById('phone_count').value) : 0;
-    
-    // CBトグルの状態
     const isCbChecked = document.getElementById('cb_toggle').checked;
     
-    // 2. 割引額の計算（※金額はダミー：SB=1100, YM=1188として設定済み）
     const totalOuchiWari = carrierDiscount * phoneCount;
     const cbDiscount = isCbChecked ? 2500 : 0;
     
-    // トータル実質負担（マイナスにならないよう制御）
-    let totalRealPrice = basePrice - totalOuchiWari - cbDiscount;
-    if (totalRealPrice < 0) totalRealPrice = 0;
+    // 1年目の実質料金（CBあり）
+    let priceYear1 = basePrice - totalOuchiWari - cbDiscount;
+    if (priceYear1 < 0) priceYear1 = 0;
 
-    // 3. 画面への描画
+    // 2年目以降の実質料金（CBなし）
+    let priceYear2 = basePrice - totalOuchiWari;
+    if (priceYear2 < 0) priceYear2 = 0;
+
+    // 画面への描画
     document.getElementById('display_base').innerText = basePrice.toLocaleString() + '円';
     document.getElementById('display_discount').innerText = '-' + totalOuchiWari.toLocaleString() + '円';
     
-    // CBの表示切り替え
     const cbRow = document.getElementById('cb_row');
     if (isCbChecked) {
       cbRow.style.display = 'flex';
-      document.getElementById('display_cb').innerText = '-2,500円';
+      document.getElementById('price_year1').innerHTML = priceYear1.toLocaleString() + '<span>円</span>';
     } else {
       cbRow.style.display = 'none';
+      // CBをオフにした場合は、1年目も2年目も同じ金額になる
+      document.getElementById('price_year1').innerHTML = priceYear2.toLocaleString() + '<span>円</span>';
     }
 
-    // 合計金額の描画
-    document.getElementById('display_total').innerHTML = totalRealPrice.toLocaleString() + '<span>円</span>';
+    document.getElementById('price_year2').innerHTML = priceYear2.toLocaleString() + '<span>円</span>';
   }
 </script>
 
