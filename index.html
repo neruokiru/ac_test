@@ -173,6 +173,16 @@
 
   .math-op { text-align: center; font-size: 1rem; color: #bbb; line-height: 0.5; margin: 4px 0; }
 
+  /* おうち割の注釈（追加修正） */
+  .ochiWari-note {
+    font-size: 0.7rem;
+    color: #888; /* グレー色 */
+    margin-top: 4px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    font-weight: normal;
+  }
+
   /* 最終トータルボックス */
   .total-box {
     background: #fff;
@@ -261,8 +271,8 @@
 
     <div class="detail-section">
       <div class="detail-header">
-        <span>🌐 ネット代 (ずっと変わらず定額)</span>
-        <span style="font-size:0.75rem; color:#888;">基本料金: <span id="res_base" class="rolling-num">4,180</span>円</span>
+        <span>🌐 ネット代 (SoftBank 光)</span>
+        <span style="font-size:0.75rem; color:#888;">定価: <span id="res_base" class="rolling-num">4,180</span>円</span>
       </div>
       <div class="detail-row" id="res_cb_row" style="color:#ff5a00;">
         <span>🎁 CB特典 (1年目のみ)</span><span>-2,500円</span>
@@ -283,10 +293,11 @@
 
     <div class="detail-section" style="background:#fff0f0; border-color:#ffcccc;">
       <div class="detail-header" style="color:#d10000;">📱 スマホ代の割引 (おうち割)</div>
+      <div class="ochiWari-note">※割引額は、ご契約中のプランによって変わります</div>
       <div class="detail-row" style="font-weight:bold; color:#333;">
         <span>家族全員の割引額合計</span>
         <div style="color:#d10000; font-size:1.1rem; font-weight:bold;">
-          <span id="res_phone_discount" class="rolling-num">-0</span><span style="font-size:0.8rem;">円</span>
+          <span style="font-size:0.8rem; font-weight:bold;">最大 </span><span id="res_phone_discount" class="rolling-num">-0</span><span style="font-size:0.8rem;">円</span>
         </div>
       </div>
     </div>
@@ -312,6 +323,7 @@
 </div>
 
 <script>
+  // 状態を保持するオブジェクト（前回の数値を記録しておくため）
   let prevStates = {
     base: 4180,
     netY1: 1680,
@@ -321,6 +333,7 @@
     totalY2: 4180
   };
 
+  // 数字をロールさせるアニメーション関数
   function animateValue(targetId, start, end, duration, prefix = "") {
     const obj = document.getElementById(targetId);
     let startTimestamp = null;
@@ -342,6 +355,7 @@
     window.requestAnimationFrame(step);
   }
 
+  // 初期化
   document.addEventListener("DOMContentLoaded", function() {
     updateResult(true); 
   });
@@ -358,6 +372,7 @@
     }
   }
 
+  // isInit=true の場合はアニメーションをスキップ
   function updateResult(isInit = false) {
     const basePrice = parseInt(document.querySelector('input[name="house_type"]:checked').value);
     const carrierInput = document.querySelector('input[name="carrier"]:checked');
