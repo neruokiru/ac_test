@@ -92,7 +92,7 @@
   .toggle-container {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* 上寄せに変更 */
+    align-items: flex-start;
     background: #fdf5e6;
     padding: 12px 12px;
     border-radius: 6px;
@@ -149,7 +149,6 @@
     margin-bottom: 6px;
   }
   
-  /* ネット代の実質表示ボックス（画像に合わせてUI調整） */
   .net-price-box {
     display: flex;
     justify-content: space-between;
@@ -189,7 +188,6 @@
   .total-col.highlight { background: #fff8e5; border: 2px solid #ffcc00; }
   .tc-label { font-size: 0.75rem; font-weight: bold; color: #555; margin-bottom: 4px; }
   
-  /* 最終価格のサイズを大幅にアップし、太字に変更 */
   .tc-price { 
     font-size: 2.2rem; 
     font-weight: 900; 
@@ -271,7 +269,7 @@
       </div>
       <div class="net-price-box">
         <div class="net-price-col">
-          <div class="npc-label">1年目の実質</div>
+          <div class="npc-label" id="net_y1_label">1年目の実質</div>
           <div class="npc-val"><span id="res_net_y1" class="rolling-num">1,680</span><span>円</span></div>
         </div>
         <div class="net-price-col">
@@ -393,9 +391,17 @@
       if(prevStates.totalY2 !== totalY2) animateValue('price_total_y2', prevStates.totalY2, totalY2, duration);
     }
 
-    // CBがOFFの時、特典の行自体を非表示にする（画像通りのクリーンな状態になります）
+    // CBのON/OFFに応じて表示を切り替え
     const cbRow = document.getElementById('res_cb_row');
-    cbRow.style.display = isCbChecked ? 'flex' : 'none';
+    const netY1Label = document.getElementById('net_y1_label');
+    
+    if (isCbChecked) {
+      cbRow.style.display = 'flex';
+      netY1Label.innerText = '1年目の実質'; // CBありなら「実質」
+    } else {
+      cbRow.style.display = 'none';
+      netY1Label.innerText = '1年目'; // CBなしなら「1年目」のみ
+    }
 
     prevStates = {
       base: basePrice,
