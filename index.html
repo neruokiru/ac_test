@@ -28,8 +28,8 @@
     color: #000;
   }
   
-  /* 入力ステップ（コンパクト化） */
-  .step-box { margin-bottom: 12px; }
+  /* 入力ステップ */
+  .step-box { margin-bottom: 16px; }
   .step-label {
     font-weight: bold;
     font-size: 0.85rem;
@@ -51,7 +51,7 @@
   .radio-group label {
     flex: 1;
     text-align: center;
-    padding: 8px 2px;
+    padding: 10px 2px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 0.85rem;
@@ -64,7 +64,7 @@
     border: 2px solid #005bac;
     background-color: #f0f7ff;
     color: #005bac;
-    padding: 7px 1px;
+    padding: 9px 1px;
   }
 
   /* セレクトボックス */
@@ -80,133 +80,161 @@
     background: #fff url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E') no-repeat right 10px top 50%;
     background-size: 10px auto;
   }
-  .hidden-step {
+  .hidden-step { display: none; }
+
+  /* ❶ 基本料金の巨大表示ボックス */
+  .basic-fee-box {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 24px 12px;
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .bf-label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  .bf-price-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: baseline; 
+    color: #333;
+  }
+  .bf-price-wrapper .rolling-num {
+    font-size: 3.8rem; 
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .bf-price-wrapper .bf-unit {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-left: 4px;
+  }
+
+  /* 割引オプションリスト */
+  .opt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .opt-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .opt-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px 10px;
+    position: relative;
+    z-index: 2;
+    transition: border-radius 0.2s ease;
+  }
+  .opt-info {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .opt-icon { font-size: 1.1rem; }
+  
+  /* 注釈テキスト */
+  .opt-note {
     display: none;
+    font-size: 0.7rem;
+    color: #666;
+    background: #fdfdfd;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    margin-top: 0;
+    line-height: 1.4;
     animation: fadeIn 0.3s ease;
   }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-  .divider { border-top: 2px dashed #ddd; margin: 16px 0; }
-
-  /* CBトグルスイッチ */
-  .toggle-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: #fdf5e6;
-    padding: 12px 12px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    border: 1px solid #ffcc00;
-  }
-  .toggle-text-area {
-    flex: 1;
-    padding-right: 12px;
-  }
-  .toggle-label { 
-    font-size: 0.85rem; 
-    font-weight: bold; 
-    color: #d10000; 
-    line-height: 1.3; 
-  }
-  .toggle-note {
-    font-size: 0.65rem;
-    color: #666;
-    margin-top: 6px;
-    line-height: 1.4;
-    font-weight: normal;
-  }
-
-  .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; margin-top: 2px; flex-shrink: 0; }
+  /* トグルスイッチ */
+  .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0;}
   .toggle-switch input { opacity: 0; width: 0; height: 0; }
   .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px; }
   .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
   input:checked + .slider { background-color: #ff5a00; }
   input:checked + .slider:before { transform: translateX(20px); }
 
-  /* 明細セクション */
-  .detail-section {
-    background: #f8f9fa;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 12px 10px;
-    margin-bottom: 8px;
+  /* おうち割 詳細入力エリア */
+  .ouchi-details {
+    background: #fff0f0;
+    border: 1px solid #ffcccc;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: 12px;
+    margin-top: 0;
+    margin-bottom: 0;
   }
-  .detail-header {
-    font-size: 0.85rem;
+  
+  /* ❷ 割引の総合計額表示ボックス（スタイル改修） */
+  .total-discount-box {
+    background: #fff8e5;
+    border: 2px solid #ffcc00;
+    border-radius: 6px;
+    padding: 24px 12px;
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  .td-label { 
+    font-size: 1rem; 
+    font-weight: bold; 
+    color: #d10000; 
+    margin-bottom: 12px; 
+  }
+  
+  /* 数字と「最大」「円」のメリハリをつけるラッパー */
+  .td-price-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    color: #d10000;
+  }
+  .td-prefix {
+    font-size: 1.8rem; /* 「最大」の文字 */
+    font-weight: 900;
+    margin-right: 6px;
+  }
+  .td-price-wrapper .rolling-num {
+    font-size: 3.8rem; /* 数字を極大化 */
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: #e60000; /* より目を引く鮮やかな赤 */
+  }
+  .td-unit {
+    font-size: 1.1rem; /* 「円」の文字 */
     font-weight: bold;
-    color: #005bac;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: #555;
-    margin-bottom: 6px;
-  }
-  
-  .net-price-box {
-    display: flex;
-    justify-content: space-between;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 10px 0;
-    margin-top: 8px;
-  }
-  .net-price-col { text-align: center; flex: 1; }
-  .net-price-col:first-child { border-right: 1px solid #e0e0e0; }
-  .npc-label { font-size: 0.7rem; color: #888; margin-bottom: 4px;}
-  
-  /* アニメーションする数字のスタイル */
-  .rolling-num {
-    font-variant-numeric: tabular-nums; 
-    display: inline-block;
+    color: #333; /* 単位は黒にして数字の赤を際立たせる */
+    margin-left: 4px;
   }
 
-  .npc-val { font-size: 1.1rem; font-weight: bold; color: #333; }
-  .npc-val span { font-size: 0.8rem; font-weight: normal;}
-
-  .math-op { text-align: center; font-size: 1rem; color: #bbb; line-height: 0.5; margin: 4px 0; }
-
-  /* おうち割の注釈（追加修正） */
-  .ochiWari-note {
-    font-size: 0.7rem;
-    color: #888; /* グレー色 */
-    margin-top: 4px;
-    margin-bottom: 8px;
-    line-height: 1.4;
-    font-weight: normal;
+  .td-note { 
+    font-size: 0.7rem; 
+    color: #666; 
+    margin-top: 12px; 
   }
 
-  /* 最終トータルボックス */
-  .total-box {
-    background: #fff;
-    border: 2px solid #005bac;
-    border-radius: 6px;
-    padding: 16px 12px;
-    margin-top: 12px;
-    margin-bottom: 16px;
-  }
-  .total-header { text-align: center; font-size: 0.95rem; color: #005bac; font-weight: bold; margin-bottom: 12px; }
-  .total-flex { display: flex; gap: 8px; }
-  .total-col { flex: 1; background: #f0f7ff; border-radius: 6px; padding: 12px 4px; text-align: center; }
-  .total-col.highlight { background: #fff8e5; border: 2px solid #ffcc00; }
-  .tc-label { font-size: 0.75rem; font-weight: bold; color: #555; margin-bottom: 4px; }
-  
-  .tc-price { 
-    font-size: 2.2rem; 
-    font-weight: 900; 
-    color: #333; 
-    line-height: 1.1; 
-    letter-spacing: -1px;
-  }
-  .highlight .tc-price { color: #d10000; }
-  .tc-price span { font-size: 1rem; font-weight: bold; letter-spacing: 0; }
+  .rolling-num { font-variant-numeric: tabular-nums; display: inline-block; }
 
   .cv-btn {
     width: 100%; background: #005bac; color: #fff; font-size: 1rem; font-weight: bold;
@@ -222,7 +250,7 @@
   <div class="sim-title">どれだけおトク？あなたの月額料金！</div>
 
   <div class="step-box">
-    <div class="step-label"><span class="step-badge">STEP 1</span> 住居タイプ</div>
+    <div class="step-label"><span class="step-badge">STEP 1</span> 住居タイプを選択</div>
     <div class="radio-group">
       <input type="radio" name="house_type" id="type_mansion" value="4180" onchange="updateResult()" checked>
       <label for="type_mansion">集合住宅</label>
@@ -231,126 +259,115 @@
     </div>
   </div>
 
+  <div class="basic-fee-box">
+    <div class="bf-label">ネット代 基本月額料金 (定価)</div>
+    <div class="bf-price-wrapper">
+      <span id="res_base" class="rolling-num">4,180</span>
+      <span class="bf-unit">円/月</span>
+    </div>
+  </div>
+
   <div class="step-box">
-    <div class="step-label"><span class="step-badge">STEP 2</span> ご利用中のスマホ</div>
-    <div class="radio-group">
-      <input type="radio" name="carrier" id="c_sb" value="1100" onchange="toggleFamilyStep(); updateResult();">
-      <label for="c_sb">SoftBank</label>
-      <input type="radio" name="carrier" id="c_ym" value="1188" onchange="toggleFamilyStep(); updateResult();">
-      <label for="c_ym">Y!mobile</label>
-      <input type="radio" name="carrier" id="c_none" value="0" onchange="toggleFamilyStep(); updateResult();" checked>
-      <label for="c_none">なし・他社</label>
-    </div>
-  </div>
-
-  <div class="step-box hidden-step" id="family_step">
-    <div class="step-label"><span class="step-badge">STEP 3</span> 家族も含めた台数</div>
-    <select id="phone_count" class="sim-select" onchange="updateResult()">
-      <option value="1">1台（ご本人のみ）</option>
-      <option value="2">2台</option>
-      <option value="3">3台</option>
-      <option value="4">4台</option>
-      <option value="5">5台以上</option>
-    </select>
-  </div>
-
-  <div class="divider"></div>
-
-  <div id="result_area">
+    <div class="step-label"><span class="step-badge">STEP 2</span> 割引オプションを選ぶ</div>
     
-    <div class="toggle-container">
-      <div class="toggle-text-area">
-        <div class="toggle-label">🎁 新規申し込み限定 3万円CB適用<br><span style="font-size:0.7rem; color:#888;">(1年間 実質2,500円/月 割引換算)</span></div>
-        <div class="toggle-note">※ダミーテキストです。当サイト限定のキャンペーンとなります。適用条件として新規でのお申し込みから6ヶ月間の継続利用が必須となります。キャッシュバックは開通月の翌々月末にご指定の口座へお振り込みいたします。詳細な適用条件は規約をご確認ください。</div>
+    <div class="opt-list">
+      
+      <div class="opt-group">
+        <div class="opt-item" id="item_cb">
+          <div class="opt-info"><span class="opt-icon">🎁</span> 最大50,000円キャッシュバック</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt_cb" onchange="updateResult()" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="opt-note" id="note_cb">※ダミーテキストです。本キャンペーンは当サイト限定です。適用には新規お申し込みと6ヶ月以上の継続利用が条件となります。還元時期や詳細な適用条件につきましては、お申し込み前に必ず利用規約をご確認ください。</div>
       </div>
-      <label class="toggle-switch">
-        <input type="checkbox" id="cb_toggle" checked onchange="updateResult()">
-        <span class="slider"></span>
-      </label>
+
+      <div class="opt-group">
+        <div class="opt-item" id="item_norikae">
+          <div class="opt-info"><span class="opt-icon">🔄</span> 安心乗り換えキャンペーン</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt_norikae" onchange="updateResult()" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="opt-note" id="note_norikae">※ダミーテキストです。他社回線からのお乗り換えに伴い発生する違約金・撤去工事費を最大10万円まで還元いたします。適用には各種証明書の提出が必要となります。詳細は公式キャンペーンページ等をご確認ください。</div>
+      </div>
+
+      <div class="opt-group">
+        <div class="opt-item" id="item_const">
+          <div class="opt-info"><span class="opt-icon">🚧</span> 工事費無料キャンペーン</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt_const" onchange="updateResult()" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="opt-note" id="note_const">※ダミーテキストです。新規開通工事にかかる基本工事費（最大31,680円）を月額料金からの割引により実質無料とさせていただきます。土日祝日の追加工事費等は対象外となりますのであらかじめご了承ください。</div>
+      </div>
+
+      <div class="opt-group">
+        <div class="opt-item" id="item_ouchi" style="border-color: #ffcccc; background: #fffafb;">
+          <div class="opt-info" style="color:#d10000;"><span class="opt-icon">📱</span> おうち割 (スマホセット割)</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt_ouchi" onchange="toggleOuchiStep(); updateResult()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="ouchi_details" class="ouchi-details hidden-step">
+          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">ご利用中のスマホキャリア</div>
+          <div class="radio-group" style="margin-bottom:10px;">
+            <input type="radio" name="carrier" id="c_sb" value="1100" onchange="updateResult()" checked>
+            <label for="c_sb">SoftBank</label>
+            <input type="radio" name="carrier" id="c_ym" value="1188" onchange="updateResult()">
+            <label for="c_ym">Y!mobile</label>
+          </div>
+          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">家族も含めた台数</div>
+          <select id="phone_count" class="sim-select" onchange="updateResult()" style="margin-bottom:8px;">
+            <option value="1">1台（ご本人のみ）</option>
+            <option value="2">2台</option>
+            <option value="3">3台</option>
+            <option value="4">4台</option>
+            <option value="5">5台以上</option>
+          </select>
+          <div style="font-size:0.7rem; color:#d10000; font-weight:bold; margin-top:8px;">※ダミーテキストです。対象プランへのご加入と、指定オプション（月額550円〜）へのご加入が必須となります。割引額はプランにより異なりますのでご注意ください。</div>
+        </div>
+      </div>
+      
     </div>
-
-    <div class="detail-section">
-      <div class="detail-header">
-        <span>🌐 ネット代 (SoftBank 光)</span>
-        <span style="font-size:0.75rem; color:#888;">定価: <span id="res_base" class="rolling-num">4,180</span>円</span>
-      </div>
-      <div class="detail-row" id="res_cb_row" style="color:#ff5a00;">
-        <span>🎁 CB特典 (1年目のみ)</span><span>-2,500円</span>
-      </div>
-      <div class="net-price-box">
-        <div class="net-price-col">
-          <div class="npc-label" id="net_y1_label">1年目の実質</div>
-          <div class="npc-val"><span id="res_net_y1" class="rolling-num">1,680</span><span>円</span></div>
-        </div>
-        <div class="net-price-col">
-          <div class="npc-label">2年目以降</div>
-          <div class="npc-val"><span id="res_net_y2" class="rolling-num">4,180</span><span>円</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="math-op">➖</div>
-
-    <div class="detail-section" style="background:#fff0f0; border-color:#ffcccc;">
-      <div class="detail-header" style="color:#d10000;">📱 スマホ代の割引 (おうち割)</div>
-      <div class="ochiWari-note">※割引額は、ご契約中のプランによって変わります</div>
-      <div class="detail-row" style="font-weight:bold; color:#333;">
-        <span>家族全員の割引額合計</span>
-        <div style="color:#d10000; font-size:1.1rem; font-weight:bold;">
-          <span style="font-size:0.8rem; font-weight:bold;">最大 </span><span id="res_phone_discount" class="rolling-num">-0</span><span style="font-size:0.8rem;">円</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="math-op">🟰</div>
-
-    <div class="total-box">
-      <div class="total-header">家計全体の「実質」月額負担</div>
-      <div class="total-flex">
-        <div class="total-col highlight">
-          <div class="tc-label">1年目 (1〜12ヶ月)</div>
-          <div class="tc-price"><span id="price_total_y1" class="rolling-num">1,680</span><span>円</span></div>
-        </div>
-        <div class="total-col">
-          <div class="tc-label">2年目以降ずっと</div>
-          <div class="tc-price"><span id="price_total_y2" class="rolling-num">4,180</span><span>円</span></div>
-        </div>
-      </div>
-    </div>
-
-    <button type="button" class="cv-btn">詳細見積もりとお申込みのご相談はこちら！</button>
   </div>
+
+  <div class="total-discount-box">
+    <div class="td-label">✨ 割引・キャンペーン総合計額</div>
+    <div class="td-price-wrapper">
+      <span class="td-prefix">最大</span>
+      <span id="res_benefit_sum" class="rolling-num">181,680</span>
+      <span class="td-unit">円</span>
+    </div>
+    <div class="td-note">※おうち割適用時は、スマホ代割引の1年間分を合算しています</div>
+  </div>
+
+  <button type="button" class="cv-btn">詳細見積もりとお申込みのご相談はこちら！</button>
 </div>
 
 <script>
-  // 状態を保持するオブジェクト（前回の数値を記録しておくため）
   let prevStates = {
     base: 4180,
-    netY1: 1680,
-    netY2: 4180,
-    phoneDiscount: 0,
-    totalY1: 1680,
-    totalY2: 4180
+    benefitSum: 181680
   };
 
-  // 数字をロールさせるアニメーション関数
+  // 数字アニメーション関数
   function animateValue(targetId, start, end, duration, prefix = "") {
     const obj = document.getElementById(targetId);
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      
       const ease = 1 - Math.pow(1 - progress, 4);
-      
       const current = Math.floor(start + (end - start) * ease);
-      obj.innerHTML = prefix + current.toLocaleString();
       
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        obj.innerHTML = prefix + end.toLocaleString();
-      }
+      obj.innerHTML = prefix + current.toLocaleString();
+      if (progress < 1) window.requestAnimationFrame(step);
+      else obj.innerHTML = prefix + end.toLocaleString();
     };
     window.requestAnimationFrame(step);
   }
@@ -360,71 +377,85 @@
     updateResult(true); 
   });
 
-  function toggleFamilyStep() {
-    const carrier = document.querySelector('input[name="carrier"]:checked');
-    const familyStep = document.getElementById('family_step');
+  // おうち割の詳細設定エリアの開閉
+  function toggleOuchiStep() {
+    const isOuchiOn = document.getElementById('opt_ouchi').checked;
+    const details = document.getElementById('ouchi_details');
+    const item = document.getElementById('item_ouchi');
     
-    if (carrier && parseInt(carrier.value) > 0) {
-      familyStep.style.display = 'block';
+    if (isOuchiOn) {
+      details.style.display = 'block';
+      item.style.borderBottomLeftRadius = '0';
+      item.style.borderBottomRightRadius = '0';
     } else {
-      familyStep.style.display = 'none';
+      details.style.display = 'none';
+      item.style.borderBottomLeftRadius = '6px';
+      item.style.borderBottomRightRadius = '6px';
+      document.getElementById('c_sb').checked = true;
       document.getElementById('phone_count').value = "1";
     }
   }
 
-  // isInit=true の場合はアニメーションをスキップ
-  function updateResult(isInit = false) {
-    const basePrice = parseInt(document.querySelector('input[name="house_type"]:checked').value);
-    const carrierInput = document.querySelector('input[name="carrier"]:checked');
-    const carrierDiscount = carrierInput ? parseInt(carrierInput.value) : 0;
-    const phoneCount = carrierDiscount > 0 ? parseInt(document.getElementById('phone_count').value) : 0;
-    const isCbChecked = document.getElementById('cb_toggle').checked;
+  // 注釈エリアの開閉コントロール
+  function toggleNoteDisplay(optionId, isChecked) {
+    const noteId = 'note_' + optionId;
+    const itemId = 'item_' + optionId;
+    const noteEl = document.getElementById(noteId);
+    const itemEl = document.getElementById(itemId);
     
-    const cbDiscount = isCbChecked ? 2500 : 0;
-    const totalOuchiWari = carrierDiscount * phoneCount; 
-    
-    let netPriceY1 = basePrice - cbDiscount;
-    let netPriceY2 = basePrice;
-    let totalY1 = netPriceY1 - totalOuchiWari;
-    let totalY2 = netPriceY2 - totalOuchiWari;
+    if (isChecked) {
+      noteEl.style.display = 'block';
+      itemEl.style.borderBottomLeftRadius = '0';
+      itemEl.style.borderBottomRightRadius = '0';
+    } else {
+      noteEl.style.display = 'none';
+      itemEl.style.borderBottomLeftRadius = '6px';
+      itemEl.style.borderBottomRightRadius = '6px';
+    }
+  }
 
+  function updateResult(isInit = false) {
+    // 1. 基本料金の取得
+    const basePrice = parseInt(document.querySelector('input[name="house_type"]:checked').value);
+    
+    // 2. オプションのON/OFF状態取得
+    const hasCb = document.getElementById('opt_cb').checked;
+    const hasNorikae = document.getElementById('opt_norikae').checked;
+    const hasConst = document.getElementById('opt_const').checked;
+    const hasOuchi = document.getElementById('opt_ouchi').checked;
+    
+    // 3. 注釈の表示切り替え
+    toggleNoteDisplay('cb', hasCb);
+    toggleNoteDisplay('norikae', hasNorikae);
+    toggleNoteDisplay('const', hasConst);
+    
+    // 4. 割引総額の計算
+    let benefitSum = 0;
+    if (hasCb) benefitSum += 50000;
+    if (hasNorikae) benefitSum += 100000;
+    if (hasConst) benefitSum += 31680;
+    
+    if (hasOuchi) {
+      const carrierVal = parseInt(document.querySelector('input[name="carrier"]:checked').value);
+      const count = parseInt(document.getElementById('phone_count').value);
+      const monthlyDiscount = carrierVal * count;
+      benefitSum += (monthlyDiscount * 12);
+    }
+    
     const duration = 600;
 
+    // 5. 画面への描画とアニメーション
     if (isInit) {
       document.getElementById('res_base').innerHTML = basePrice.toLocaleString();
-      document.getElementById('res_net_y1').innerHTML = netPriceY1.toLocaleString();
-      document.getElementById('res_net_y2').innerHTML = netPriceY2.toLocaleString();
-      document.getElementById('res_phone_discount').innerHTML = '-' + totalOuchiWari.toLocaleString();
-      document.getElementById('price_total_y1').innerHTML = totalY1.toLocaleString();
-      document.getElementById('price_total_y2').innerHTML = totalY2.toLocaleString();
+      document.getElementById('res_benefit_sum').innerHTML = benefitSum.toLocaleString();
     } else {
       if(prevStates.base !== basePrice) animateValue('res_base', prevStates.base, basePrice, duration);
-      if(prevStates.netY1 !== netPriceY1) animateValue('res_net_y1', prevStates.netY1, netPriceY1, duration);
-      if(prevStates.netY2 !== netPriceY2) animateValue('res_net_y2', prevStates.netY2, netPriceY2, duration);
-      if(prevStates.phoneDiscount !== totalOuchiWari) animateValue('res_phone_discount', prevStates.phoneDiscount, totalOuchiWari, duration, "-");
-      if(prevStates.totalY1 !== totalY1) animateValue('price_total_y1', prevStates.totalY1, totalY1, duration);
-      if(prevStates.totalY2 !== totalY2) animateValue('price_total_y2', prevStates.totalY2, totalY2, duration);
-    }
-
-    // CBのON/OFFに応じて表示を切り替え
-    const cbRow = document.getElementById('res_cb_row');
-    const netY1Label = document.getElementById('net_y1_label');
-    
-    if (isCbChecked) {
-      cbRow.style.display = 'flex';
-      netY1Label.innerText = '1年目の実質'; // CBありなら「実質」
-    } else {
-      cbRow.style.display = 'none';
-      netY1Label.innerText = '1年目'; // CBなしなら「1年目」のみ
+      if(prevStates.benefitSum !== benefitSum) animateValue('res_benefit_sum', prevStates.benefitSum, benefitSum, duration);
     }
 
     prevStates = {
       base: basePrice,
-      netY1: netPriceY1,
-      netY2: netPriceY2,
-      phoneDiscount: totalOuchiWari,
-      totalY1: totalY1,
-      totalY2: totalY2
+      benefitSum: benefitSum
     };
   }
 </script>
