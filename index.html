@@ -150,30 +150,20 @@
   }
   .opt-icon { font-size: 1.1rem; }
   
-  /* 注釈と小見出し（解説文） */
+  /* 注釈テキスト */
   .opt-note {
     display: none;
+    font-size: 0.7rem;
+    color: #666;
     background: #fdfdfd;
-    padding: 12px 10px;
+    padding: 10px;
     border: 1px solid #e0e0e0;
     border-top: none;
     border-radius: 0 0 6px 6px;
     margin-top: 0;
+    line-height: 1.4;
     animation: fadeIn 0.3s ease;
   }
-  .opt-headline {
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-  .opt-disclaimer {
-    font-size: 0.7rem;
-    color: #666;
-    line-height: 1.4;
-  }
-
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
   /* トグルスイッチ */
@@ -283,7 +273,7 @@
         <div class="opt-item" id="item_cb">
           <div class="opt-info"><span class="opt-icon">🎁</span> 最大50,000円キャッシュバック</div>
           <label class="toggle-switch">
-            <input type="checkbox" id="opt_cb" onchange="updateResult()" checked>
+            <input type="checkbox" id="opt_cb" onchange="updateResult()">
             <span class="slider"></span>
           </label>
         </div>
@@ -297,7 +287,7 @@
         <div class="opt-item" id="item_norikae">
           <div class="opt-info"><span class="opt-icon">🔄</span> 安心乗り換えキャンペーン</div>
           <label class="toggle-switch">
-            <input type="checkbox" id="opt_norikae" onchange="updateResult()" checked>
+            <input type="checkbox" id="opt_norikae" onchange="updateResult()">
             <span class="slider"></span>
           </label>
         </div>
@@ -311,7 +301,7 @@
         <div class="opt-item" id="item_const">
           <div class="opt-info"><span class="opt-icon">🚧</span> 工事費無料キャンペーン</div>
           <label class="toggle-switch">
-            <input type="checkbox" id="opt_const" onchange="updateResult()" checked>
+            <input type="checkbox" id="opt_const" onchange="updateResult()">
             <span class="slider"></span>
           </label>
         </div>
@@ -360,7 +350,7 @@
     <div class="td-label">✨ 割引・キャンペーン総合計額</div>
     <div class="td-price-wrapper">
       <span class="td-prefix">最大</span>
-      <span id="res_benefit_sum" class="rolling-num">181,680</span>
+      <span id="res_benefit_sum" class="rolling-num">0</span>
       <span class="td-unit">円</span>
     </div>
     <div class="td-note">※おうち割適用時は、スマホ代割引の1年間分を合算しています</div>
@@ -370,9 +360,10 @@
 </div>
 
 <script>
+  // 初期値を「0円」に設定（アニメーションの開始点）
   let prevStates = {
     base: 4180,
-    benefitSum: 181680
+    benefitSum: 0
   };
 
   // 数字アニメーション関数
