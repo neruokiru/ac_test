@@ -150,20 +150,37 @@
   }
   .opt-icon { font-size: 1.1rem; }
   
-  /* 注釈テキスト */
+  /* 注釈エリア全体 */
   .opt-note {
     display: none;
-    font-size: 0.7rem;
-    color: #666;
     background: #fdfdfd;
-    padding: 10px;
+    padding: 12px 10px;
     border: 1px solid #e0e0e0;
     border-top: none;
     border-radius: 0 0 6px 6px;
     margin-top: 0;
-    line-height: 1.4;
     animation: fadeIn 0.3s ease;
   }
+  
+  /* 🌟 目立たせる小見出し（解説文）のスタイル */
+  .opt-headline {
+    font-size: 0.9rem;
+    font-weight: 900; /* 極太に */
+    color: #d10000; /* 強い赤色 */
+    background-color: #fff5f5; /* うっすら赤い背景色 */
+    padding: 8px 10px; /* 余白をつけてボックス化 */
+    border-radius: 4px;
+    border-left: 4px solid #d10000; /* 左側にアクセントライン */
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  
+  .opt-disclaimer {
+    font-size: 0.7rem;
+    color: #666;
+    line-height: 1.4;
+  }
+
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
   /* トグルスイッチ */
@@ -320,7 +337,7 @@
           </label>
         </div>
         <div id="ouchi_details" class="ouchi-details hidden-step">
-          <div class="opt-headline" style="color:#d10000;">SoftbankかY!mobileのスマホをお使いの方は、ネットとセットでスマホ代がずっと安くなる！</div>
+          <div class="opt-headline">SoftbankかY!mobileのスマホをお使いの方は、ネットとセットでスマホ代がずっと安くなる！</div>
           
           <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px; margin-top:10px;">ご利用中のスマホキャリア</div>
           <div class="radio-group" style="margin-bottom:12px;">
@@ -360,7 +377,6 @@
 </div>
 
 <script>
-  // 初期値を「0円」に設定（アニメーションの開始点）
   let prevStates = {
     base: 4180,
     benefitSum: 0
