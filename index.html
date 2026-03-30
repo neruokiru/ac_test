@@ -5,44 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>月額料金シミュレーション</title>
 <style>
-  /* ベース設定 */
+  /* 🌟 ベース設定（青いグラデーション背景に変更） */
   body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background-color: #f4f5f7;
+    background: linear-gradient(to bottom, #0075eb, #2bd2ff); /* 画像に合わせたブルーグラデーション */
     color: #333;
-    padding: 10px;
+    padding: 20px 10px;
+    min-height: 100vh;
+    margin: 0;
   }
   .simulator-container {
-    background: #fff;
-    border-radius: 8px;
-    padding: 16px 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     max-width: 480px;
     margin: 0 auto;
   }
-  .sim-title {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 16px;
-    color: #000;
-  }
   
-  /* 入力ステップ */
-  .step-box { margin-bottom: 16px; }
-  .step-label {
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-    color: #444;
+  /* 🌟 カード型のコンテナ（STEPごとに白い箱にする） */
+  .card-box {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    overflow: hidden; /* 角丸からはみ出ないように */
+  }
+
+  /* 🌟 新しい見出しデザイン（紺色グラデーション＋白バッジ） */
+  .step-header {
+    background: linear-gradient(135deg, #001f7a, #4a008c); /* 紺〜紫のグラデーション */
+    padding: 16px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
   .step-badge {
-    background: #005bac;
+    background: #fff;
+    color: #001f7a;
+    font-size: 0.85rem;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 20px; /* 角丸のピル型 */
+    flex-shrink: 0;
+  }
+  .step-title-text {
     color: #fff;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-right: 6px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    line-height: 1.4;
+  }
+
+  /* カード内の余白 */
+  .card-content {
+    padding: 20px 14px;
   }
 
   /* 選択ボタン（ラジオ） */
@@ -51,26 +63,27 @@
   .radio-group label {
     flex: 1;
     text-align: center;
-    padding: 10px 2px;
+    padding: 12px 2px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: bold;
     color: #666;
     cursor: pointer;
     transition: all 0.2s ease;
   }
+  /* 🌟 選択時のボタン色を画像に合わせる（水色背景＋青枠） */
   .radio-group input[type="radio"]:checked + label {
     border: 2px solid #005bac;
-    background-color: #f0f7ff;
+    background-color: #d6eaff;
     color: #005bac;
-    padding: 9px 1px;
+    padding: 11px 1px;
   }
 
   /* セレクトボックス */
   .sim-select {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 0.9rem;
@@ -78,26 +91,20 @@
     color: #333;
     appearance: none;
     background: #fff url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E') no-repeat right 10px top 50%;
-    background-size: 10px auto;
+    background-size: 12px auto;
   }
   .hidden-step { display: none; }
 
-  /* ❶ 基本料金の巨大表示ボックス */
+  /* ❶ 基本料金の巨大表示エリア（枠線を消してスッキリ配置） */
   .basic-fee-box {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 24px 12px;
     text-align: center;
-    margin-top: 12px;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-top: 20px;
   }
   .bf-label {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: bold;
     color: #333;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
   }
   .bf-price-wrapper {
     display: flex;
@@ -121,8 +128,7 @@
   .opt-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 10px;
   }
   .opt-group {
     display: flex;
@@ -133,15 +139,15 @@
     justify-content: space-between;
     align-items: center;
     background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 12px 10px;
+    border: 1px solid #ddd; /* 枠線を少し柔らかい色に */
+    border-radius: 8px;
+    padding: 14px 10px;
     position: relative;
     z-index: 2;
     transition: border-radius 0.2s ease;
   }
   
-  /* 2行になった見出しのスタイリング */
+  /* 2行見出しのスタイリング（維持） */
   .opt-info {
     display: flex;
     align-items: center; 
@@ -166,22 +172,20 @@
   .opt-title-sub {
     font-size: 0.95rem;
     font-weight: 900;
-    color: #d10000; /* 赤文字 */
+    color: #d10000; 
   }
   
   /* 注釈エリア全体 */
   .opt-note {
     display: none;
-    background: #fff5f5;
+    background: #fcfcfc;
     padding: 12px 10px;
-    border: 1px solid #ffcccc;
+    border: 1px solid #ddd;
     border-top: none;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 8px 8px;
     margin-top: 0;
     animation: fadeIn 0.3s ease;
   }
-  
-  /* ★修正：注釈テキスト（黒文字、サイズ縮小、太字解除） */
   .opt-disclaimer {
     font-size: 0.75rem;
     font-weight: normal;
@@ -191,40 +195,35 @@
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* トグルスイッチ */
+  /* 🌟 トグルスイッチ（ON時を画像に合わせて「青」に変更） */
   .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0;}
   .toggle-switch input { opacity: 0; width: 0; height: 0; }
   .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px; }
   .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-  input:checked + .slider { background-color: #ff5a00; }
+  input:checked + .slider { background-color: #005bac; } /* ←ここを青に変更 */
   input:checked + .slider:before { transform: translateX(20px); }
 
   /* おうち割 詳細入力エリア */
   .ouchi-details {
-    background: #fff5f5;
-    border: 1px solid #ffcccc;
+    background: #fcfcfc;
+    border: 1px solid #ddd;
     border-top: none;
-    border-radius: 0 0 6px 6px;
-    padding: 12px;
+    border-radius: 0 0 8px 8px;
+    padding: 14px 12px;
     margin-top: 0;
-    margin-bottom: 0;
   }
   
-  /* ❷ 割引の総合計額表示ボックス */
+  /* ❷ 割引の総合計額表示ボックス（枠を消してスッキリ配置） */
   .total-discount-box {
-    background: #fff8e5;
-    border: 2px solid #ffcc00;
-    border-radius: 6px;
-    padding: 24px 12px;
     text-align: center;
-    margin-top: 16px;
-    margin-bottom: 24px;
+    margin-top: 24px;
+    margin-bottom: 10px;
   }
   .td-label { 
     font-size: 1rem; 
     font-weight: bold; 
     color: #d10000; 
-    margin-bottom: 12px; 
+    margin-bottom: 8px; 
   }
   .td-price-wrapper {
     display: flex;
@@ -238,169 +237,188 @@
     margin-right: 6px;
   }
   .td-price-wrapper .rolling-num {
-    font-size: 3.8rem; 
+    font-size: 4.2rem; /* さらに少し大きく */
     font-weight: 900;
     line-height: 1;
     letter-spacing: -2px;
     color: #e60000; 
   }
   .td-unit {
-    font-size: 1.1rem; 
+    font-size: 1.2rem; 
     font-weight: bold;
-    color: #333; 
+    color: #d10000; /* 単位も赤に合わせて統一感 */
     margin-left: 4px;
   }
   .td-note { 
     font-size: 0.7rem; 
     color: #666; 
-    margin-top: 12px; 
+    margin-top: 8px; 
   }
 
   .rolling-num { font-variant-numeric: tabular-nums; display: inline-block; }
 
+  /* CVボタン */
   .cv-btn {
-    width: 100%; background: #005bac; color: #fff; font-size: 1rem; font-weight: bold;
-    padding: 16px; border: none; border-radius: 6px; cursor: pointer;
-    box-shadow: 0 4px 0 #00427d; transition: transform 0.1s, box-shadow 0.1s;
+    width: 100%; 
+    background: #ff5a00; /* CVボタンは目立つオレンジに */
+    color: #fff; 
+    font-size: 1.1rem; 
+    font-weight: bold;
+    padding: 18px; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer;
+    box-shadow: 0 4px 0 #cc4800; 
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-bottom: 20px;
   }
-  .cv-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #00427d; }
+  .cv-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #cc4800; }
 </style>
 </head>
 <body>
 
 <div class="simulator-container">
-  <div class="sim-title">どれだけおトク？あなたの月額料金！</div>
 
-  <div class="step-box">
-    <div class="step-label"><span class="step-badge">STEP 1</span> 住居タイプを選択</div>
-    <div class="radio-group house-type-group">
-      <input type="radio" name="house_type" id="type_mansion" value="4180" onchange="updateResult()" checked>
-      <label for="type_mansion">集合住宅</label>
-      <input type="radio" name="house_type" id="type_family" value="5720" onchange="updateResult()">
-      <label for="type_family">戸建て</label>
+  <div class="card-box">
+    <div class="step-header">
+      <div class="step-badge">STEP 1</div>
+      <div class="step-title-text">住居タイプを選択して<br>月額のネット代を知ろう！</div>
+    </div>
+    <div class="card-content">
+      <div class="radio-group house-type-group">
+        <input type="radio" name="house_type" id="type_mansion" value="4180" onchange="updateResult()" checked>
+        <label for="type_mansion">集合住宅</label>
+        <input type="radio" name="house_type" id="type_family" value="5720" onchange="updateResult()">
+        <label for="type_family">戸建て</label>
+      </div>
+
+      <div class="basic-fee-box">
+        <div class="bf-label">あなたの毎月のネット代は</div>
+        <div class="bf-price-wrapper">
+          <span id="res_base" class="rolling-num">4,180</span>
+          <span class="bf-unit">円/月</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="basic-fee-box">
-    <div class="bf-label">ネット代 基本月額料金 (定価)</div>
-    <div class="bf-price-wrapper">
-      <span id="res_base" class="rolling-num">4,180</span>
-      <span class="bf-unit">円/月</span>
+  <div class="card-box">
+    <div class="step-header">
+      <div class="step-badge">STEP 2</div>
+      <div class="step-title-text">割引オプションを選んで、<br>どれだけおトクになるか知ろう！</div>
     </div>
-  </div>
-
-  <div class="step-box">
-    <div class="step-label"><span class="step-badge">STEP 2</span> 割引オプションを選ぶ</div>
-    
-    <div class="opt-list">
+    <div class="card-content">
       
-      <div class="opt-group">
-        <div class="opt-item" id="item_cb">
-          <div class="opt-info">
-            <span class="opt-icon">🎁</span>
-            <div class="opt-texts">
-              <div class="opt-title-main">WEB限定！新規お申込みの方へ</div>
-              <div class="opt-title-sub">最大50,000円キャッシュバック！</div>
+      <div class="opt-list">
+        <div class="opt-group">
+          <div class="opt-item" id="item_cb">
+            <div class="opt-info">
+              <span class="opt-icon">🎁</span>
+              <div class="opt-texts">
+                <div class="opt-title-main">WEB限定！新規お申込みの方へ</div>
+                <div class="opt-title-sub">最大50,000円キャッシュバック！</div>
+              </div>
             </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="opt_cb" onchange="updateResult()">
+              <span class="slider"></span>
+            </label>
           </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt_cb" onchange="updateResult()">
-            <span class="slider"></span>
-          </label>
+          <div class="opt-note" id="note_cb">
+            <div class="opt-disclaimer">当サイトからお申込みで条件該当の方全員に最大50,000円キャッシュバックいたします。</div>
+          </div>
         </div>
-        <div class="opt-note" id="note_cb">
-          <div class="opt-disclaimer">当サイトからお申込みで条件該当の方全員に最大50,000円キャッシュバックいたします。</div>
+
+        <div class="opt-group">
+          <div class="opt-item" id="item_norikae">
+            <div class="opt-info">
+              <span class="opt-icon">🔄</span>
+              <div class="opt-texts">
+                <div class="opt-title-main">他社からお乗り換えの方へ</div>
+                <div class="opt-title-sub">違約金・撤去工事費を負担します！</div>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="opt_norikae" onchange="updateResult()">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="opt-note" id="note_norikae">
+            <div class="opt-disclaimer">契約更新月以外での解約にお悩みの方もご安心ください。違約金や撤去工事費を負担させていただきます。</div>
+          </div>
+        </div>
+
+        <div class="opt-group">
+          <div class="opt-item" id="item_const">
+            <div class="opt-info">
+              <span class="opt-icon">🚧</span>
+              <div class="opt-texts">
+                <div class="opt-title-main">新規お申込みの方へ</div>
+                <div class="opt-title-sub">光回線の回線工事費を実質無料に！</div>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="opt_const" onchange="updateResult()">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="opt-note" id="note_const">
+            <div class="opt-disclaimer">SoftBank 光なら、月々のお支払額から工事費を割引するので、工事費が実質無料です。</div>
+          </div>
+        </div>
+
+        <div class="opt-group">
+          <div class="opt-item" id="item_ouchi">
+            <div class="opt-info">
+              <span class="opt-icon">📱</span>
+              <div class="opt-texts">
+                <div class="opt-title-main">SoftBank/Y!mobileのスマホをご利用の方へ</div>
+                <div class="opt-title-sub">ネットとセットでスマホ代がずっと割引！</div>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="opt_ouchi" onchange="toggleOuchiStep(); updateResult()">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div id="ouchi_details" class="ouchi-details hidden-step">
+            <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">ご利用中のスマホキャリア</div>
+            <div class="radio-group" style="margin-bottom:14px;">
+              <input type="radio" name="carrier" id="c_sb" value="1100" onchange="updateResult()" checked>
+              <label for="c_sb">SoftBank</label>
+              <input type="radio" name="carrier" id="c_ym" value="1650" onchange="updateResult()">
+              <label for="c_ym">Y!mobile</label>
+            </div>
+            
+            <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">家族も含めた台数</div>
+            <select id="phone_count" class="sim-select" onchange="updateResult()" style="margin-bottom:14px;">
+              <option value="1">1台（ご本人のみ）</option>
+              <option value="2">2台</option>
+              <option value="3">3台</option>
+              <option value="4">4台</option>
+              <option value="5">5台以上</option>
+            </select>
+            
+            <div class="opt-disclaimer">SoftBankなら最大1,100円/月、Y!mobileなら最大1,650円/月、スマホ代がずーっと安く。しかも家族の分だけさらに安く！（例：家族4人がSoftBankスマホなら、最大4,400円/月の割引）</div>
+          </div>
         </div>
       </div>
 
-      <div class="opt-group">
-        <div class="opt-item" id="item_norikae">
-          <div class="opt-info">
-            <span class="opt-icon">🔄</span>
-            <div class="opt-texts">
-              <div class="opt-title-main">他社からお乗り換えの方へ</div>
-              <div class="opt-title-sub">違約金・撤去工事費を負担します！</div>
-            </div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt_norikae" onchange="updateResult()">
-            <span class="slider"></span>
-          </label>
+      <div class="total-discount-box">
+        <div class="td-label">あなたの割引・キャンペーン総合計額は</div>
+        <div class="td-price-wrapper">
+          <span class="td-prefix">最大</span>
+          <span id="res_benefit_sum" class="rolling-num">0</span>
+          <span class="td-unit">円</span>
         </div>
-        <div class="opt-note" id="note_norikae">
-          <div class="opt-disclaimer">契約更新月以外での解約にお悩みの方もご安心ください。違約金や撤去工事費を負担させていただきます。</div>
-        </div>
+        <div class="td-note">※おうち割適用時は、スマホ代割引の1年間分を合算しています</div>
       </div>
 
-      <div class="opt-group">
-        <div class="opt-item" id="item_const">
-          <div class="opt-info">
-            <span class="opt-icon">🚧</span>
-            <div class="opt-texts">
-              <div class="opt-title-main">新規お申込みの方へ</div>
-              <div class="opt-title-sub">光回線の回線工事費を実質無料に！</div>
-            </div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt_const" onchange="updateResult()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="opt-note" id="note_const">
-          <div class="opt-disclaimer">SoftBank 光なら、月々のお支払額から工事費を割引するので、工事費が実質無料です。</div>
-        </div>
-      </div>
-
-      <div class="opt-group">
-        <div class="opt-item" id="item_ouchi" style="border-color: #ffcccc; background: #fffafb;">
-          <div class="opt-info">
-            <span class="opt-icon">📱</span>
-            <div class="opt-texts">
-              <div class="opt-title-main">SoftBank/Y!mobileのスマホをご利用の方へ</div>
-              <div class="opt-title-sub">ネットとセットでスマホ代がずっと割引！</div>
-            </div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt_ouchi" onchange="toggleOuchiStep(); updateResult()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div id="ouchi_details" class="ouchi-details hidden-step">
-          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px; margin-top:4px;">ご利用中のスマホキャリア</div>
-          <div class="radio-group" style="margin-bottom:12px;">
-            <input type="radio" name="carrier" id="c_sb" value="1100" onchange="updateResult()" checked>
-            <label for="c_sb">SoftBank</label>
-            <input type="radio" name="carrier" id="c_ym" value="1650" onchange="updateResult()">
-            <label for="c_ym">Y!mobile</label>
-          </div>
-          
-          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">家族も含めた台数</div>
-          <select id="phone_count" class="sim-select" onchange="updateResult()" style="margin-bottom:12px;">
-            <option value="1">1台（ご本人のみ）</option>
-            <option value="2">2台</option>
-            <option value="3">3台</option>
-            <option value="4">4台</option>
-            <option value="5">5台以上</option>
-          </select>
-          
-          <div class="opt-disclaimer">SoftBankなら最大1,100円/月、Y!mobileなら最大1,650円/月、スマホ代がずーっと安く。しかも家族の分だけさらに安く！（例：家族4人がSoftBankスマホなら、最大4,400円/月の割引）</div>
-        </div>
-      </div>
-      
     </div>
-  </div>
-
-  <div class="total-discount-box">
-    <div class="td-label">✨ 割引・キャンペーン総合計額</div>
-    <div class="td-price-wrapper">
-      <span class="td-prefix">最大</span>
-      <span id="res_benefit_sum" class="rolling-num">0</span>
-      <span class="td-unit">円</span>
-    </div>
-    <div class="td-note">※おうち割適用時は、スマホ代割引の1年間分を合算しています</div>
   </div>
 
   <button type="button" class="cv-btn">詳細見積もりとお申込みのご相談はこちら！</button>
+
 </div>
 
 <script>
@@ -426,12 +444,10 @@
     window.requestAnimationFrame(step);
   }
 
-  // 初期化
   document.addEventListener("DOMContentLoaded", function() {
     updateResult(true); 
   });
 
-  // おうち割の詳細設定エリアの開閉
   function toggleOuchiStep() {
     const isOuchiOn = document.getElementById('opt_ouchi').checked;
     const details = document.getElementById('ouchi_details');
@@ -443,14 +459,13 @@
       item.style.borderBottomRightRadius = '0';
     } else {
       details.style.display = 'none';
-      item.style.borderBottomLeftRadius = '6px';
-      item.style.borderBottomRightRadius = '6px';
+      item.style.borderBottomLeftRadius = '8px';
+      item.style.borderBottomRightRadius = '8px';
       document.getElementById('c_sb').checked = true;
       document.getElementById('phone_count').value = "1";
     }
   }
 
-  // 注釈エリアの開閉コントロール
   function toggleNoteDisplay(optionId, isChecked) {
     const noteId = 'note_' + optionId;
     const itemId = 'item_' + optionId;
@@ -463,8 +478,8 @@
       itemEl.style.borderBottomRightRadius = '0';
     } else {
       noteEl.style.display = 'none';
-      itemEl.style.borderBottomLeftRadius = '6px';
-      itemEl.style.borderBottomRightRadius = '6px';
+      itemEl.style.borderBottomLeftRadius = '8px';
+      itemEl.style.borderBottomRightRadius = '8px';
     }
   }
 
