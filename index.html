@@ -145,40 +145,35 @@
     font-weight: bold;
     color: #333;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* 文章が2行になってもアイコンと揃うように */
     gap: 6px;
+    line-height: 1.4;
+    padding-right: 12px; /* トグルとの余白 */
   }
-  .opt-icon { font-size: 1.1rem; }
+  .opt-icon { 
+    font-size: 1.1rem; 
+    margin-top: -1px; /* アイコンの縦位置微調整 */
+    flex-shrink: 0; 
+  }
   
-  /* 注釈エリア全体 */
+  /* 注釈エリア全体（背景を薄い赤にして目立たせる） */
   .opt-note {
     display: none;
-    background: #fdfdfd;
+    background: #fff5f5;
     padding: 12px 10px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #ffcccc;
     border-top: none;
     border-radius: 0 0 6px 6px;
     margin-top: 0;
     animation: fadeIn 0.3s ease;
   }
   
-  /* 小見出し（解説文）のスタイル */
-  .opt-headline {
-    font-size: 0.9rem;
-    font-weight: 900;
-    color: #d10000;
-    background-color: #fff5f5;
-    padding: 8px 10px;
-    border-radius: 4px;
-    border-left: 4px solid #d10000;
-    margin-bottom: 10px;
-    line-height: 1.4;
-  }
-  
+  /* 注釈テキスト（太字・大きめ・赤色に変更） */
   .opt-disclaimer {
-    font-size: 0.7rem;
-    color: #666; /* すべての注釈をこのグレーで統一 */
-    line-height: 1.4;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #d10000;
+    line-height: 1.5;
   }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
@@ -193,7 +188,7 @@
 
   /* おうち割 詳細入力エリア */
   .ouchi-details {
-    background: #fff0f0;
+    background: #fff5f5; /* 注釈エリアと背景色を統一 */
     border: 1px solid #ffcccc;
     border-top: none;
     border-radius: 0 0 6px 6px;
@@ -288,67 +283,63 @@
       
       <div class="opt-group">
         <div class="opt-item" id="item_cb">
-          <div class="opt-info"><span class="opt-icon">🎁</span> 最大50,000円キャッシュバック</div>
+          <div class="opt-info"><span class="opt-icon">🎁</span> WEB限定！新規お申込みの方に最大50,000円キャッシュバック！</div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_cb" onchange="updateResult()">
             <span class="slider"></span>
           </label>
         </div>
         <div class="opt-note" id="note_cb">
-          <div class="opt-headline">当サイト限定のキャッシュバックキャンペーン！</div>
-          <div class="opt-disclaimer">※ダミーテキストです。本キャンペーンは当サイト限定です。適用には新規お申し込みと6ヶ月以上の継続利用が条件となります。還元時期や詳細な適用条件につきましては、お申し込み前に必ず利用規約をご確認ください。</div>
+          <div class="opt-disclaimer">当サイトからお申込みで条件該当の方全員に最大50,000円キャッシュバックいたします。</div>
         </div>
       </div>
 
       <div class="opt-group">
         <div class="opt-item" id="item_norikae">
-          <div class="opt-info"><span class="opt-icon">🔄</span> 安心乗り換えキャンペーン</div>
+          <div class="opt-info"><span class="opt-icon">🔄</span> 安心乗り換え！他社からの乗り換えで違約金・撤去工事費をソフトバンクが負担！</div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_norikae" onchange="updateResult()">
             <span class="slider"></span>
           </label>
         </div>
         <div class="opt-note" id="note_norikae">
-          <div class="opt-headline">他社からの乗り換えで違約金・撤去工事費を負担！</div>
-          <div class="opt-disclaimer">※ダミーテキストです。他社回線からのお乗り換えに伴い発生する違約金・撤去工事費を最大10万円まで還元いたします。適用には各種証明書の提出が必要となります。詳細は公式キャンペーンページ等をご確認ください。</div>
+          <div class="opt-disclaimer">契約更新月以外での解約にお悩みの方もご安心ください。違約金や撤去工事費を負担させていただきます。</div>
         </div>
       </div>
 
       <div class="opt-group">
         <div class="opt-item" id="item_const">
-          <div class="opt-info"><span class="opt-icon">🚧</span> 工事費無料キャンペーン</div>
+          <div class="opt-info"><span class="opt-icon">🚧</span> 新規お申込みの方限定！回線工事費が実質無料！</div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_const" onchange="updateResult()">
             <span class="slider"></span>
           </label>
         </div>
         <div class="opt-note" id="note_const">
-          <div class="opt-headline">他社からの乗り換え・新規申し込みで、回線工事費が実質無料！</div>
-          <div class="opt-disclaimer">※ダミーテキストです。新規開通工事にかかる基本工事費（最大31,680円）を月額料金からの割引により実質無料とさせていただきます。土日祝日の追加工事費等は対象外となりますのであらかじめご了承ください。</div>
+          <div class="opt-disclaimer">SoftBank 光なら、月々のお支払額から工事費を割引するので、工事費が実質無料です。</div>
         </div>
       </div>
 
       <div class="opt-group">
         <div class="opt-item" id="item_ouchi" style="border-color: #ffcccc; background: #fffafb;">
-          <div class="opt-info" style="color:#d10000;"><span class="opt-icon">📱</span> おうち割 (スマホセット割)</div>
+          <div class="opt-info" style="color:#d10000;"><span class="opt-icon">📱</span> SoftbankかY!mobileのスマホをお使いの方は、ネットとセットでスマホ代がずっと割引！</div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_ouchi" onchange="toggleOuchiStep(); updateResult()">
             <span class="slider"></span>
           </label>
         </div>
         <div id="ouchi_details" class="ouchi-details hidden-step">
-          <div class="opt-headline">SoftbankかY!mobileのスマホをお使いの方は、ネットとセットでスマホ代がずっと安くなる！</div>
           
-          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px; margin-top:10px;">ご利用中のスマホキャリア</div>
+          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">ご利用中のスマホキャリア</div>
           <div class="radio-group" style="margin-bottom:12px;">
             <input type="radio" name="carrier" id="c_sb" value="1100" onchange="updateResult()" checked>
             <label for="c_sb">SoftBank</label>
-            <input type="radio" name="carrier" id="c_ym" value="1188" onchange="updateResult()">
+            <input type="radio" name="carrier" id="c_ym" value="1650" onchange="updateResult()">
             <label for="c_ym">Y!mobile</label>
           </div>
           
           <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">家族も含めた台数</div>
-          <select id="phone_count" class="sim-select" onchange="updateResult()" style="margin-bottom:10px;">
+          <select id="phone_count" class="sim-select" onchange="updateResult()" style="margin-bottom:12px;">
             <option value="1">1台（ご本人のみ）</option>
             <option value="2">2台</option>
             <option value="3">3台</option>
@@ -356,7 +347,7 @@
             <option value="5">5台以上</option>
           </select>
           
-          <div class="opt-disclaimer">※ダミーテキストです。対象プランへのご加入と、指定オプション（月額550円〜）へのご加入が必須となります。割引額はプランにより異なりますのでご注意ください。</div>
+          <div class="opt-disclaimer">SoftBankなら最大1,100円/月、Y!mobileなら最大1,650円/月、スマホ代がずーっと安く。しかも家族の分だけさらに安く！（例：家族4人がSoftBankスマホなら、最大4,400円/月の割引）</div>
         </div>
       </div>
       
