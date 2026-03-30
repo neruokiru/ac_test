@@ -140,23 +140,36 @@
     z-index: 2;
     transition: border-radius 0.2s ease;
   }
+  
+  /* 2行になった見出しのスタイリング */
   .opt-info {
-    font-size: 0.85rem;
-    font-weight: bold;
-    color: #333;
     display: flex;
-    align-items: flex-start; /* 文章が2行になってもアイコンと揃うように */
-    gap: 6px;
-    line-height: 1.4;
-    padding-right: 12px; /* トグルとの余白 */
+    align-items: center; 
+    gap: 8px;
+    padding-right: 12px; 
   }
   .opt-icon { 
-    font-size: 1.1rem; 
-    margin-top: -1px; /* アイコンの縦位置微調整 */
+    font-size: 1.4rem; 
     flex-shrink: 0; 
   }
+  .opt-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    line-height: 1.3;
+  }
+  .opt-title-main {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #333;
+  }
+  .opt-title-sub {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #d10000; /* 赤文字 */
+  }
   
-  /* 注釈エリア全体（背景を薄い赤にして目立たせる） */
+  /* 注釈エリア全体 */
   .opt-note {
     display: none;
     background: #fff5f5;
@@ -168,7 +181,6 @@
     animation: fadeIn 0.3s ease;
   }
   
-  /* 注釈テキスト（太字・大きめ・赤色に変更） */
   .opt-disclaimer {
     font-size: 0.85rem;
     font-weight: bold;
@@ -188,7 +200,7 @@
 
   /* おうち割 詳細入力エリア */
   .ouchi-details {
-    background: #fff5f5; /* 注釈エリアと背景色を統一 */
+    background: #fff5f5;
     border: 1px solid #ffcccc;
     border-top: none;
     border-radius: 0 0 6px 6px;
@@ -283,7 +295,13 @@
       
       <div class="opt-group">
         <div class="opt-item" id="item_cb">
-          <div class="opt-info"><span class="opt-icon">🎁</span> WEB限定！新規お申込みの方に最大50,000円キャッシュバック！</div>
+          <div class="opt-info">
+            <span class="opt-icon">🎁</span>
+            <div class="opt-texts">
+              <div class="opt-title-main">WEB限定！新規お申込みの方へ</div>
+              <div class="opt-title-sub">最大50,000円キャッシュバック！</div>
+            </div>
+          </div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_cb" onchange="updateResult()">
             <span class="slider"></span>
@@ -296,7 +314,13 @@
 
       <div class="opt-group">
         <div class="opt-item" id="item_norikae">
-          <div class="opt-info"><span class="opt-icon">🔄</span> 安心乗り換え！他社からの乗り換えで違約金・撤去工事費をソフトバンクが負担！</div>
+          <div class="opt-info">
+            <span class="opt-icon">🔄</span>
+            <div class="opt-texts">
+              <div class="opt-title-main">他社からお乗り換えの方へ</div>
+              <div class="opt-title-sub">違約金・撤去工事費を負担します！</div>
+            </div>
+          </div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_norikae" onchange="updateResult()">
             <span class="slider"></span>
@@ -309,7 +333,13 @@
 
       <div class="opt-group">
         <div class="opt-item" id="item_const">
-          <div class="opt-info"><span class="opt-icon">🚧</span> 新規お申込みの方限定！回線工事費が実質無料！</div>
+          <div class="opt-info">
+            <span class="opt-icon">🚧</span>
+            <div class="opt-texts">
+              <div class="opt-title-main">新規お申込みの方へ</div>
+              <div class="opt-title-sub">光回線の回線工事費を実質無料に！</div>
+            </div>
+          </div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_const" onchange="updateResult()">
             <span class="slider"></span>
@@ -322,15 +352,20 @@
 
       <div class="opt-group">
         <div class="opt-item" id="item_ouchi" style="border-color: #ffcccc; background: #fffafb;">
-          <div class="opt-info" style="color:#d10000;"><span class="opt-icon">📱</span> SoftbankかY!mobileのスマホをお使いの方は、ネットとセットでスマホ代がずっと割引！</div>
+          <div class="opt-info">
+            <span class="opt-icon">📱</span>
+            <div class="opt-texts">
+              <div class="opt-title-main">SoftBank/Y!mobileのスマホをご利用の方へ</div>
+              <div class="opt-title-sub">ネットとセットでスマホ代がずっと割引！</div>
+            </div>
+          </div>
           <label class="toggle-switch">
             <input type="checkbox" id="opt_ouchi" onchange="toggleOuchiStep(); updateResult()">
             <span class="slider"></span>
           </label>
         </div>
         <div id="ouchi_details" class="ouchi-details hidden-step">
-          
-          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px;">ご利用中のスマホキャリア</div>
+          <div style="font-size:0.75rem; font-weight:bold; color:#444; margin-bottom:6px; margin-top:4px;">ご利用中のスマホキャリア</div>
           <div class="radio-group" style="margin-bottom:12px;">
             <input type="radio" name="carrier" id="c_sb" value="1100" onchange="updateResult()" checked>
             <label for="c_sb">SoftBank</label>
@@ -347,7 +382,7 @@
             <option value="5">5台以上</option>
           </select>
           
-          <div class="opt-disclaimer">SoftBankなら最大1,100円/月、Y!mobileなら最大1,650円/月、スマホ代がずーっと安く。しかも家族の分だけさらに安く！（例：家族4人がSoftBankスマホなら、最大4,400円/月の割引）</div>
+          <div class="opt-disclaimer" style="color:#666; font-weight:normal; font-size:0.75rem;">SoftBankなら最大1,100円/月、Y!mobileなら最大1,650円/月、スマホ代がずーっと安く。しかも家族の分だけさらに安く！（例：家族4人がSoftBankスマホなら、最大4,400円/月の割引）</div>
         </div>
       </div>
       
